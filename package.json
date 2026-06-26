@@ -1,0 +1,24 @@
+{
+  "name": "ttp-server-checkpoint",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danielsullivanttp/ttp-server-checkpoint.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/danielsullivanttp/ttp-server-checkpoint/issues"
+  },
+  "homepage": "https://github.com/danielsullivanttp/ttp-server-checkpoint#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
