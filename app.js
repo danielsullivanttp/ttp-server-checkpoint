@@ -107,13 +107,25 @@ app.post("/api/plants/", (req, res) => {
 });
 
 app.post("/api/plants/:plantId/notes", (req, res) => {
+  const plantId = Number(req.params.plantId);
+
+  // Check if plant exists
+  const plant = plants.find((p) => p.id === plantId);
+  if (!plant) {
+    return res.status(404).send("Plant Not Found!!!");
+  }
+
   const { note } = req.body;
+
   const newCareNote = {
     id: nextNoteId,
+    plantId,
     note
   };
+
   nextNoteId++;
   careNotes.push(newCareNote);
+
   res.status(201).json(newCareNote);
 });
 
@@ -127,17 +139,24 @@ app.patch("/api/plants/:id", (req, res) => {
 // Explain: Why does PATCH copy fields onto the plant, instead of replacing the whole plant?
 // Because PATCH is meant for partial updates. Object.assign(plant, req.body) only assigns the requested fields and leaves the rest unchanged.
 
-app.delete("/api/plants/:id", (req, res) => {
-  const plant = plants.find((plant) => {
-    return plant.id === Number(req.params.id);
-  });
- 
-  if (!plant) return res.status(404).send("Plant Not Found!!!");
-    
-  const index = plants.indexOf(plant);
-  plants.splice(index, 1);
-  res.status(200).send("Object was deleted successfully!!!");
-  res.status(202).end();
+app.delete("/api/plants/:plantId/notes/:noteId", (req, res) => {
+  const plantId = Number(req.params.plantId);
+  const noteId = Number(req.params.noteId);
+
+  const plant = plants.find((p) => p.id === plantId);
+  if (!plant) {
+    return res.status(404).send("Plant Not Found!!!");
+  }
+
+  const note = careNotes.find((n) => n.id === noteId && n.plantId === plantId);
+  if (!note) {
+    return res.status(404).send("Note Not Found!!!");
+  }
+
+  const index = careNotes.indexOf(note);
+  careNotes.splice(index, 1);
+
+  res.status(204).send("Note deleted");
 });
 
 app.listen(8080, () => console.log("Server running on port 8080"));
